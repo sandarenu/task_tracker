@@ -14,8 +14,7 @@ object TicketingCoreProject extends Build {
   val jodaTime = "joda-time" % "joda-time" % "1.6"
   val scalaTime = "org.scala-tools.time" % "time_2.8.0" % "0.2"
 
-  val squeryl = "org.squeryl" %% "squeryl" % "0.9.4"
-  val mysqlDriver = "mysql" % "mysql-connector-java" % "5.1.10"
+  val casbah = "com.mongodb.casbah" % "casbah_2.9.0-1" % "2.1.5.0"
 
   val Slf4jLog4jDep = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
 
@@ -30,7 +29,7 @@ object TicketingCoreProject extends Build {
 
   def publishToRepository = Some(Resolver.file("Local Maven Repository", Path.userHome / ".m2" / "repository" asFile))
 
-  lazy val baseSettings = Defaults.defaultSettings ++ scctSettings ++ Seq(
+  lazy val baseSettings = Defaults.defaultSettings ++ Seq(
     version := ticketingVersion,
     organization := Organization,
     scalaVersion := ScalaVersion,
@@ -42,7 +41,7 @@ object TicketingCoreProject extends Build {
 
   lazy val parent = Project("taskTrackerParent", file("."),
     settings = baseSettings ++ Seq(
-      name := "task-tracker"
+      name := "task-tracker-parent"
     )) aggregate(core)
 
   lazy val core = Project("core", file("core"),
@@ -52,7 +51,10 @@ object TicketingCoreProject extends Build {
         jodaTime,
         scalaTime,
         scalaTesting,
-        ScalaCheckDep)))
+        ScalaCheckDep,
+	casbah,
+	jodaTime,
+	scalaTime)))
 
 
 }
