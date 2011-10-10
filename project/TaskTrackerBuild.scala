@@ -21,9 +21,11 @@ object TicketingCoreProject extends Build {
   val scalaTesting = "org.scala-tools.testing" %% "specs" % "1.6.8" % "test"
   //val scctSbt = "ch.craven" %% "scct-plugin" % "0.2"
   val vaadin = "com.vaadin" % "vaadin" % "6.7.0"
+  val servletApi = "javax.servlet" % "servlet-api" % "2.5"
 
-  val jettyWebApp = "org.eclipse.jetty" % "jetty-webapp" % "7.3.0.v20110203" % "container"
-  val jettyPlus = "org.eclipse.jetty" % "jetty-plus" % "7.3.0.v20110203" % "container"
+  val jettyWebApp = "org.eclipse.jetty" % "jetty-webapp" % "6.1.22" % "container"
+  val jettyPlus = "org.eclipse.jetty" % "jetty-plus" % "6.1.22" % "container"
+  val jetty = "org.mortbay.jetty" % "jetty" % "6.1.22" % "container"
 
   val repositories = Seq(
     ScalaToolsSnapshots,
@@ -69,10 +71,10 @@ object TicketingCoreProject extends Build {
         scalaTesting,
         ScalaCheckDep,
         casbah,
-    jodaTime,
-    scalaTime,
+        jodaTime,
+        scalaTime,
         vaadin,
-        jettyWebApp,
-        jettyPlus))) dependsOn(core)
+        servletApi,
+        jetty))) dependsOn(core)
 
 }
