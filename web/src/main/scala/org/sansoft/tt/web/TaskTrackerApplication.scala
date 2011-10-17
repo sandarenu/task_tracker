@@ -3,6 +3,8 @@ package org.sansoft.tt.web
 import com.vaadin.Application
 import com.vaadin.ui._
 import org.sansoft.tt.web.components._
+import java.util.Locale
+
 
 class TaskTrackerApplication extends Application {
 /*  def init = {
@@ -11,6 +13,7 @@ class TaskTrackerApplication extends Application {
 	setMainWindow(mainWindow)
   }
   */
+
 
   override def init: Unit = {
      setTheme("custom");

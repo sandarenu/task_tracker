@@ -4,12 +4,13 @@ import com.vaadin.ui._
 import com.vaadin.terminal._
 import com.vaadin.ui.themes.BaseTheme
 import org.sansoft.tt.web.usecase.UseCaseForm
+import org.sansoft.tt.web.i18n.I18nSupport._
 
-class MainMenu(mainPanel : MainPanel) extends HorizontalLayout {
+class MainMenu(mainPanel: MainPanel) extends HorizontalLayout {
 
-  val btnDashBoard: SButton = new SButton("DashBoard", _ => btnDashBoardClicked)
-  val btnBackLog: SButton = new SButton("BackLog", _ => btnBackLogClicked)
-  val btnTimeSheet: SButton = new SButton("TimeSheet", _ => btnTimeSheetClicked)
+  val btnDashBoard: SButton = new SButton(getMessage("mainmenu.dashboard"), _ => btnDashBoardClicked)
+  val btnBackLog: SButton = new SButton(getMessage("mainmenu.backlog"), _ => btnBackLogClicked)
+  val btnTimeSheet: SButton = new SButton(getMessage("mainmenu.timesheet"), _ => btnTimeSheetClicked)
 
   def init() = {
     addComponent(formatButton(btnDashBoard))
@@ -47,7 +48,7 @@ class MainMenu(mainPanel : MainPanel) extends HorizontalLayout {
 
   private def btnBackLogClicked() = {
     println("DashBoard Clicked")
-    val form : UseCaseForm = new UseCaseForm
+    val form: UseCaseForm = new UseCaseForm
     form.init
 
     mainPanel.changeBody(form)

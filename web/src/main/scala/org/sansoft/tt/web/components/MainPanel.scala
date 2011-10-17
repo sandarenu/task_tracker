@@ -3,6 +3,7 @@ package org.sansoft.tt.web.components
 import com.vaadin.ui._
 import com.vaadin.terminal._
 import com.vaadin.ui.themes.BaseTheme
+import org.sansoft.tt.web.i18n.I18nSupport._
 
 class MainPanel extends VerticalLayout {
   val header: HeaderPanel = new HeaderPanel
@@ -54,13 +55,13 @@ class HeaderPanel extends HorizontalLayout {
   private def createHeaderMenu() = {
     val layout: HorizontalLayout = new HorizontalLayout
 
-    val btnProjects: SButton = new SButton("Projects", _ => btnProjectsClicked)
+    val btnProjects: SButton = new SButton(getMessage("headermenu.projects"), _ => btnProjectsClicked)
     btnProjects.setStyleName(BaseTheme.BUTTON_LINK);
     layout.addComponent(btnProjects)
 
     layout.addComponent(new Label("|"))
 
-    val btnHelp: SButton = new SButton("Help", _ => btnHelpClicked)
+    val btnHelp: SButton = new SButton(getMessage("headermenu.help"), _ => btnHelpClicked)
     btnHelp.setStyleName(BaseTheme.BUTTON_LINK);
     layout.addComponent(btnHelp)
 
