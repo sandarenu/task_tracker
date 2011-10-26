@@ -10,7 +10,7 @@ package org.sansoft.tt.util
 object KeyBox {
   val acceptanceStatusK		= "acceptance-status"
   val acceptingUserIdK 		= "accepting-user-id"
-  val idK 					= "id"
+  val idK 					= "_id"
   val colorK 				= "color"
   val createdByK 			= "created-by"
   val descriptionK			= "description"
@@ -23,7 +23,7 @@ object KeyBox {
   val nameK 					= "name"
   val ownerIdK 				= "owner-id"
   val priorityIdK 			= "priority-id"
-  val projectIdK 			= "project-id"
+  val projectCodeK 			= "project-code"
   val releaseIdK 			= "release-id"
   val startDateK             = "start-date"
   val valueK                = "value"

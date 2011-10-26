@@ -4,9 +4,11 @@ import com.vaadin.ui._
 import com.vaadin.terminal._
 import com.vaadin.ui.themes.BaseTheme
 import org.sansoft.tt.web.i18n.I18nSupport._
+import org.sansoft.tt.web.project._
+import org.sansoft.tt.repository.ProjectRepository
 
 class MainPanel extends VerticalLayout {
-  val header: HeaderPanel = new HeaderPanel
+  val header: HeaderPanel = new HeaderPanel(this)
   val mainMenu: MainMenu = new MainMenu(this)
   val contentPanel: Panel = new Panel
 
@@ -35,7 +37,7 @@ class MainPanel extends VerticalLayout {
   }
 }
 
-class HeaderPanel extends HorizontalLayout {
+class HeaderPanel(mainPanel: MainPanel) extends HorizontalLayout  with ComponentRegistry {
 
   def init(): Unit = {
     createHearderBanner()
@@ -74,7 +76,10 @@ class HeaderPanel extends HorizontalLayout {
   }
 
   private def btnProjectsClicked() = {
-    println("Projects clicked")
+    val form: ProjectForm = new ProjectForm(projectRepository, sysConfigRepo.getNextId("project"))
+    form.init
+
+    mainPanel.changeBody(form)
   }
 
 }

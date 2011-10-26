@@ -7,9 +7,17 @@ class SystemConfigRepository {
 
   val idCollection = MongoConnector.mongoConnection()("unique_id_collection")
 
-  def getNextId(idType: String) = {
-    val query = MongoDBObject("_id" -> idType)
+  def getNextId(idType: String) : Double = {
+    val query = MongoDBObject(idK -> idType)
     val update = $inc(valueK -> 1.0)
-    idCollection.findAndModify(query, MongoDBObject.empty, MongoDBObject.empty, false, update, true, true)
+    val idObject: MongoDBObject = idCollection.findAndModify(query, MongoDBObject.empty, MongoDBObject.empty, false, update, true, true) match {
+      case None => throw new IllegalStateException("ID object cannot be none")
+      case Some(x) => x
+    }
+
+    idObject.getAs[Double](valueK) match {
+      case None => throw new IllegalStateException("ID object cannot be none")
+      case Some(x) => x
+    }
   }
 }
