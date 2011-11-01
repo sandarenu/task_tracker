@@ -16,6 +16,10 @@ class ProjectRepository {
     result.size == 0
   }
 
+  def findAllProjects() = {
+    projectsCollection.find
+  }
+
   private def validate(project: MongoDBObject) = {
     project foreach ((t2) => if (t2._2 == null) throw new IllegalArgumentException("Null value for [" + t2._1 + "]"))
 

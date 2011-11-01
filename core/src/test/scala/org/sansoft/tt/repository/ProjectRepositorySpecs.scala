@@ -43,5 +43,25 @@ class ProjectRepositorySpecs extends Specification {
         nameK -> "ABC-Project2")
       projectRepo.createNewProject(project1) must throwA(new IllegalArgumentException("ProjectId[PRJ-2] already taken."))
     }
+
+    "select all the projects in the db" in {
+
+      projectRepo.createNewProject(MongoDBObject(idK -> "1",
+        projectCodeK -> "PRJ-1",
+        nameK -> "ABC-Project"))
+
+      val results = projectRepo.findAllProjects
+      results.size must be(1)
+
+      results foreach (prj => prj.as[String](idK) must beMatching("1"))
+
+      projectRepo.createNewProject(MongoDBObject(idK -> "2",
+        projectCodeK -> "PRJ-2",
+        nameK -> "PQR-Project"))
+
+      val newResults = projectRepo.findAllProjects
+      newResults.size must be(2)
+
+    }
   }
 }

@@ -7,6 +7,8 @@ import org.sansoft.tt.web.i18n.I18nSupport._
 import org.sansoft.tt.repository.ProjectRepository
 import com.mongodb.casbah.Imports._
 import org.sansoft.tt.util.KeyBox._
+import com.vaadin.terminal.UserError
+import org.sansoft.tt.util.Util._
 
 class ProjectForm(projectRepo: ProjectRepository, id: Double) extends VerticalLayout {
 
@@ -59,6 +61,24 @@ class ProjectForm(projectRepo: ProjectRepository, id: Double) extends VerticalLa
     txtCode.setWidth("200px")
     txtCode.setRequired(true)
     txtCode.setRequiredError(getMessage("project.form.project.code.required.error"))
+    txtCode.setImmediate(true)
+    txtCode.addListener(new Property.ValueChangeListener() {
+      override def valueChange(valueChangeEvent: Property.ValueChangeEvent) {
+        try {
+          if (!projectRepo.isProjectCodeAvailable(txtCode.getValue().asInstanceOf[String])) {
+            txtCode.setComponentError(new UserError(getMessage("project.form.project.code.already.taken.error")));
+            throw new Validator.InvalidValueException(getMessage("project.form.project.code.already.taken.error"));
+          } else {
+            txtCode.setComponentError(null)
+            frmproject.setComponentError(null)
+          }
+        } catch {
+          case e: Validator.InvalidValueException => frmproject.setComponentError(new UserError(e.getMessage))
+          case e: Exception => println("Unexpected error occurred while validating a field ")
+        }
+
+      }
+    })
   }
 
   def formatNameField() = {
@@ -109,12 +129,14 @@ class ProjectForm(projectRepo: ProjectRepository, id: Double) extends VerticalLa
 
   private def saveProject() = {
     try {
+      frmproject.setComponentError(null)
       frmproject.commit
       val projectData: MongoDBObject = createProjectFromUserData
       println(projectData)
       projectRepo.createNewProject(projectData)
+      getWindow().showNotification(richFormat(getMessage("project.form.project.save.success"), Map("#{0}" -> txtName.getValue)))
     } catch {
-      case e: Exception => //do nothing
+      case e: Exception => frmproject.setComponentError(new UserError(e.getMessage))
     }
 
   }
