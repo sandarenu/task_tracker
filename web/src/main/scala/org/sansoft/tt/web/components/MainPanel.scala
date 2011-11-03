@@ -76,10 +76,9 @@ class HeaderPanel(mainPanel: MainPanel) extends HorizontalLayout  with Component
   }
 
   private def btnProjectsClicked() = {
-    val form: ProjectForm = new ProjectForm(projectRepository, sysConfigRepo.getNextId("project"))
-    form.init
-
-    mainPanel.changeBody(form)
+    val projectTable : AllProjectView = new AllProjectView(projectRepository, sysConfigRepo)
+    projectTable.init
+    mainPanel.changeBody(projectTable)
   }
 
 }

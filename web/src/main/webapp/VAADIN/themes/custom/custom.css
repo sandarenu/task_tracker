@@ -2,3 +2,14 @@
     background-color: #FFFFFF !important;
 }
 
+.v-caption-messages-area {
+    background-color: #DBFFB7;
+    border: 2px solid #9ED93E;
+    left: auto;
+    margin: 4px 0 8px;
+    padding: 4px;
+    right: auto;
+    text-align: center;
+    width: 99%;
+}
+

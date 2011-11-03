@@ -9,8 +9,9 @@ import com.mongodb.casbah.Imports._
 import org.sansoft.tt.util.KeyBox._
 import com.vaadin.terminal.UserError
 import org.sansoft.tt.util.Util._
+import org.sansoft.tt.web.components.FormActionListner
 
-class ProjectForm(projectRepo: ProjectRepository, id: Double) extends VerticalLayout {
+class ProjectForm(projectRepo: ProjectRepository, id: Double, formActionListner : FormActionListner) extends VerticalLayout {
 
   val lblCaption = new Label
   val txtId = new TextField
@@ -117,7 +118,7 @@ class ProjectForm(projectRepo: ProjectRepository, id: Double) extends VerticalLa
 
   private def createButtonBar() = {
     val btnSave: SButton = new SButton(getMessage("project.form.button.save"), _ => saveProject)
-    val btnCancel: SButton = new SButton(getMessage("project.form.button.cancel"), _ => println("Submit clicked"))
+    val btnCancel: SButton = new SButton(getMessage("project.form.button.cancel"), _ => cancelClicked)
 
     val layout: HorizontalLayout = new HorizontalLayout
     layout.setSpacing(true)
@@ -134,11 +135,16 @@ class ProjectForm(projectRepo: ProjectRepository, id: Double) extends VerticalLa
       val projectData: MongoDBObject = createProjectFromUserData
       println(projectData)
       projectRepo.createNewProject(projectData)
-      getWindow().showNotification(richFormat(getMessage("project.form.project.save.success"), Map("#{0}" -> txtName.getValue)))
+//      getWindow().showNotification(richFormat(getMessage("project.form.project.save.success"), Map("#{0}" -> txtName.getValue)))
+      formActionListner.formSubmitSuccess(projectData)
     } catch {
       case e: Exception => frmproject.setComponentError(new UserError(e.getMessage))
     }
 
+  }
+
+  private def cancelClicked(){
+    formActionListner.formCancled
   }
 
   private def createProjectFromUserData(): MongoDBObject = {
