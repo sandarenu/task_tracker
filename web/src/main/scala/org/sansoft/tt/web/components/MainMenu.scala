@@ -3,7 +3,7 @@ package org.sansoft.tt.web.components
 import com.vaadin.ui._
 import com.vaadin.terminal._
 import com.vaadin.ui.themes.BaseTheme
-import org.sansoft.tt.web.usecase.UseCaseForm
+import org.sansoft.tt.web.backlog.UseCaseForm
 import org.sansoft.tt.web.i18n.I18nSupport._
 
 class MainMenu(mainPanel: MainPanel) extends HorizontalLayout {

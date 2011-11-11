@@ -14,8 +14,8 @@ import java.text.MessageFormat
 class AllProjectView(projectRepo: ProjectRepository, sysConfigRepo: SystemConfigRepository) extends VerticalLayout with FormActionListner {
 
   val projectTable = new ProjectTable(projectRepo)
-  val btnCreateNewProject = new SButton("Create New Project", _ => btnCreateNewProjectClicked)
-  val lblHeader = new Label("Projects")
+  val btnCreateNewProject = new SButton(getMessage("project.view.create.new.project"), _ => btnCreateNewProjectClicked)
+  val lblHeader = new Label(getMessage("project.view.header"))
   val lblSubmitSuccess = new Label
 
   def init() = {

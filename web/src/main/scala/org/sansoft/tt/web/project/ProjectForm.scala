@@ -2,7 +2,7 @@ package org.sansoft.tt.web.project
 
 import com.vaadin.ui._
 import com.vaadin.data._
-import org.sansoft.tt.web.components.SButton
+import org.sansoft.tt.web.components.{ SButton, STextField }
 import org.sansoft.tt.web.i18n.I18nSupport._
 import org.sansoft.tt.repository.ProjectRepository
 import com.mongodb.casbah.Imports._
@@ -11,12 +11,12 @@ import com.vaadin.terminal.UserError
 import org.sansoft.tt.util.Util._
 import org.sansoft.tt.web.components.FormActionListner
 
-class ProjectForm(projectRepo: ProjectRepository, id: Double, formActionListner : FormActionListner) extends VerticalLayout {
+class ProjectForm(projectRepo: ProjectRepository, id: Double, formActionListner: FormActionListner) extends VerticalLayout {
 
   val lblCaption = new Label
-  val txtId = new TextField
-  val txtCode = new TextField
-  val txtName = new TextField
+  val txtId = new STextField
+  val txtCode = new STextField
+  val txtName = new STextField
   val dfStartDate = new PopupDateField
   val dfEndDate = new PopupDateField
   val txtDesctiption = new RichTextArea
@@ -63,23 +63,22 @@ class ProjectForm(projectRepo: ProjectRepository, id: Double, formActionListner 
     txtCode.setRequired(true)
     txtCode.setRequiredError(getMessage("project.form.project.code.required.error"))
     txtCode.setImmediate(true)
-    txtCode.addListener(new Property.ValueChangeListener() {
-      override def valueChange(valueChangeEvent: Property.ValueChangeEvent) {
-        try {
-          if (!projectRepo.isProjectCodeAvailable(txtCode.getValue().asInstanceOf[String])) {
-            txtCode.setComponentError(new UserError(getMessage("project.form.project.code.already.taken.error")));
-            throw new Validator.InvalidValueException(getMessage("project.form.project.code.already.taken.error"));
-          } else {
-            txtCode.setComponentError(null)
-            frmproject.setComponentError(null)
-          }
-        } catch {
-          case e: Validator.InvalidValueException => frmproject.setComponentError(new UserError(e.getMessage))
-          case e: Exception => println("Unexpected error occurred while validating a field ")
-        }
+    txtCode.addListener(_ => validateProjectCode)
+  }
 
+  def validateProjectCode() = {
+    try {
+      if (!projectRepo.isProjectCodeAvailable(txtCode.getValue().asInstanceOf[String])) {
+        txtCode.setComponentError(new UserError(getMessage("project.form.project.code.already.taken.error")));
+        throw new Validator.InvalidValueException(getMessage("project.form.project.code.already.taken.error"));
+      } else {
+        txtCode.setComponentError(null)
+        frmproject.setComponentError(null)
       }
-    })
+    } catch {
+      case e: Validator.InvalidValueException => frmproject.setComponentError(new UserError(e.getMessage))
+      case e: Exception => println("Unexpected error occurred while validating a field ")
+    }
   }
 
   def formatNameField() = {
@@ -135,7 +134,7 @@ class ProjectForm(projectRepo: ProjectRepository, id: Double, formActionListner 
       val projectData: MongoDBObject = createProjectFromUserData
       println(projectData)
       projectRepo.createNewProject(projectData)
-//      getWindow().showNotification(richFormat(getMessage("project.form.project.save.success"), Map("#{0}" -> txtName.getValue)))
+      //      getWindow().showNotification(richFormat(getMessage("project.form.project.save.success"), Map("#{0}" -> txtName.getValue)))
       formActionListner.formSubmitSuccess(projectData)
     } catch {
       case e: Exception => frmproject.setComponentError(new UserError(e.getMessage))
@@ -143,7 +142,7 @@ class ProjectForm(projectRepo: ProjectRepository, id: Double, formActionListner 
 
   }
 
-  private def cancelClicked(){
+  private def cancelClicked() {
     formActionListner.formCancled
   }
 

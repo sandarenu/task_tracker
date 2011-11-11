@@ -1,4 +1,4 @@
-package org.sansoft.tt.web.usecase
+package org.sansoft.tt.web.backlog
 
 import com.vaadin.ui._
 import org.sansoft.tt.web.components.SButton
