@@ -5,8 +5,9 @@ import com.vaadin.terminal._
 import com.vaadin.ui.themes.BaseTheme
 import org.sansoft.tt.web.backlog.UseCaseForm
 import org.sansoft.tt.web.i18n.I18nSupport._
+import org.sansoft.tt.web.backlog.BacklogView
 
-class MainMenu(mainPanel: MainPanel) extends HorizontalLayout {
+class MainMenu(mainPanel: MainPanel) extends HorizontalLayout with ComponentRegistry {
 
   val btnDashBoard: SButton = new SButton(getMessage("mainmenu.dashboard"), _ => btnDashBoardClicked)
   val btnBackLog: SButton = new SButton(getMessage("mainmenu.backlog"), _ => btnBackLogClicked)
@@ -47,11 +48,10 @@ class MainMenu(mainPanel: MainPanel) extends HorizontalLayout {
   }
 
   private def btnBackLogClicked() = {
-    println("DashBoard Clicked")
-    val form: UseCaseForm = new UseCaseForm
-    form.init
+    val backlog = new BacklogView(projectRepository)
+    backlog.init
 
-    mainPanel.changeBody(form)
+    mainPanel.changeBody(backlog)
   }
 
   private def btnTimeSheetClicked() = {
